@@ -2,7 +2,7 @@
   "requested_start": "2026-01-01",
   "requested_end": "2026-01-31",
   "data_dir": "data/realtime_archive",
-  "generated_at": "2026-07-09T12:53:24.289592+00:00",
+  "generated_at": "2026-07-09T13:08:46.805693+00:00",
   "status": "BLOCKED",
   "results": [
     {
@@ -17,8 +17,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:23.739898+00:00",
-      "finished_at": "2026-07-09T12:53:23.889673+00:00",
+      "started_at": "2026-07-09T13:08:46.168804+00:00",
+      "finished_at": "2026-07-09T13:08:46.389228+00:00",
       "metadata": {
         "errors": [
           {
@@ -47,8 +47,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:23.890186+00:00",
-      "finished_at": "2026-07-09T12:53:23.990332+00:00",
+      "started_at": "2026-07-09T13:08:46.389782+00:00",
+      "finished_at": "2026-07-09T13:08:46.498139+00:00",
       "metadata": {
         "errors": [
           {
@@ -72,8 +72,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:23.990349+00:00",
-      "finished_at": "2026-07-09T12:53:24.028412+00:00",
+      "started_at": "2026-07-09T13:08:46.498159+00:00",
+      "finished_at": "2026-07-09T13:08:46.527316+00:00",
       "metadata": {
         "errors": [
           {
@@ -93,8 +93,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:24.028426+00:00",
-      "finished_at": "2026-07-09T12:53:24.080426+00:00",
+      "started_at": "2026-07-09T13:08:46.527333+00:00",
+      "finished_at": "2026-07-09T13:08:46.596726+00:00",
       "metadata": {
         "errors": [
           {
@@ -114,8 +114,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:24.080445+00:00",
-      "finished_at": "2026-07-09T12:53:24.157362+00:00",
+      "started_at": "2026-07-09T13:08:46.596746+00:00",
+      "finished_at": "2026-07-09T13:08:46.702680+00:00",
       "metadata": {
         "errors": [
           {
@@ -135,8 +135,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:24.157381+00:00",
-      "finished_at": "2026-07-09T12:53:24.213446+00:00",
+      "started_at": "2026-07-09T13:08:46.702700+00:00",
+      "finished_at": "2026-07-09T13:08:46.741212+00:00",
       "metadata": {
         "errors": [
           {
@@ -156,8 +156,8 @@
       ],
       "files_written": [],
       "rows_written": 0,
-      "started_at": "2026-07-09T12:53:24.213462+00:00",
-      "finished_at": "2026-07-09T12:53:24.289019+00:00",
+      "started_at": "2026-07-09T13:08:46.741232+00:00",
+      "finished_at": "2026-07-09T13:08:46.805147+00:00",
       "metadata": {
         "errors": [
           {

@@ -1,0 +1,68 @@
+name: HYDRA-PRIME CI and Feed Health
+
+on:
+  push:
+    branches:
+      - main
+      - arena/019f45e7-aduns-fx
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "Start date for strict feed acquisition/audit"
+        required: true
+        default: "2026-01-01"
+      end_date:
+        description: "End date for strict feed acquisition/audit"
+        required: true
+        default: "2026-01-31"
+      daily_audit:
+        description: "Run a daily strict audit loop"
+        required: true
+        type: boolean
+        default: false
+      fail_on_blocked:
+        description: "Fail job if live/acquire/audit is blocked"
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  hydra-prime:
+    name: Test, live feed health, acquisition, and strict audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    env:
+      START_DATE: ${{ github.event.inputs.start_date || '2026-01-01' }}
+      END_DATE: ${{ github.event.inputs.end_date || '2026-01-31' }}
+      DAILY_AUDIT: ${{ github.event.inputs.daily_audit || 'false' }}
+      FAIL_ON_BLOCKED: ${{ github.event.inputs.fail_on_blocked || 'false' }}
+      HYDRA_ALERT_WEBHOOK_URL: ${{ secrets.HYDRA_ALERT_WEBHOOK_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: python -m pip install --upgrade pip && python -m pip install -e .
+
+      - name: Run HYDRA-PRIME feeds from GitHub runner
+        run: ./scripts/run_github_feeds.sh
+
+      - name: Upload reports and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hydra-prime-reports-${{ github.run_id }}
+          path: |
+            reports/**
+            logs/**
+            data/realtime_archive/manifest.json
+          if-no-files-found: ignore

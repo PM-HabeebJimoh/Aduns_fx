@@ -71,6 +71,31 @@ tests/
   test_backtest.py       # strict data provenance tests
 ```
 
+## GitHub setup
+
+GitHub Actions is configured in `.github/workflows/hydra-prime.yml`.
+
+On every push/PR, and by manual `workflow_dispatch`, GitHub runs:
+
+- unit tests
+- one live-feed health cycle
+- lawful public feed acquisition attempts
+- strict real-data opportunity audit
+- report/log artifact upload
+
+Manual GitHub run example:
+
+```bash
+gh workflow run hydra-prime.yml \
+  --ref arena/019f45e7-aduns-fx \
+  -f start_date=2026-01-01 \
+  -f end_date=2026-01-31 \
+  -f daily_audit=true \
+  -f fail_on_blocked=false
+```
+
+The workflow never fabricates data. If feeds are missing/unreachable, the uploaded reports show `BLOCKED`.
+
 ## Quick start
 
 No third-party Python packages are required.
