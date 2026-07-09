@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -14,6 +15,7 @@ from .backtest import StrictRealDataBacktester
 from .formatting import decision_to_json, format_pre_move_signal
 from .free_sources import probe_free_sources, write_probe_report
 from .live import LiveConfig, LiveOpportunityScanner
+from .replacement_acquire import FreeReplacementAcquirer
 from .testing_scenarios import build_bullish_xau_engine
 
 
@@ -129,6 +131,28 @@ def cmd_probe_free_sources(args: argparse.Namespace) -> int:
     return 0 if report.status == "OK" else 2
 
 
+def cmd_acquire_replacements(args: argparse.Namespace) -> int:
+    acquirer = FreeReplacementAcquirer(
+        data_dir=args.data_dir,
+        start=args.start,
+        end=args.end,
+        timeout=args.timeout,
+        fred_api_key=os.environ.get(args.fred_api_key_env),
+        eia_api_key=os.environ.get(args.eia_api_key_env),
+    )
+    report = acquirer.run()
+    json_path, md_path = acquirer.write_report(report, args.report_dir)
+    print(f"Status: {report.status}")
+    print(f"Manifest: {report.manifest_path}")
+    print(f"JSON report: {json_path}")
+    print(f"Markdown report: {md_path}")
+    if report.blockers:
+        print("Blockers:")
+        for blocker in report.blockers:
+            print(f"- {blocker}")
+    return 0 if report.status == "OK" else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="HYDRA-PRIME pre-movement decision engine")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -165,6 +189,19 @@ def build_parser() -> argparse.ArgumentParser:
     probe.add_argument("--report-dir", default="reports", help="Directory for JSON/Markdown probe reports")
     probe.add_argument("--timeout", type=float, default=20.0, help="HTTP timeout seconds")
     probe.set_defaults(func=cmd_probe_free_sources)
+
+    replacements = sub.add_parser(
+        "acquire-replacements",
+        help="Normalize free/public replacement sources into HYDRA required feed CSVs",
+    )
+    replacements.add_argument("--start", required=True, help="Start date, e.g. 2026-01-01")
+    replacements.add_argument("--end", required=True, help="End date, e.g. 2026-07-07")
+    replacements.add_argument("--data-dir", default="data/realtime_archive", help="Directory for normalized replacement feeds and manifest")
+    replacements.add_argument("--report-dir", default="reports", help="Directory for replacement acquisition reports")
+    replacements.add_argument("--timeout", type=float, default=20.0, help="HTTP timeout seconds")
+    replacements.add_argument("--fred-api-key-env", default="FRED_API_KEY", help="Environment variable name for free FRED API key")
+    replacements.add_argument("--eia-api-key-env", default="EIA_API_KEY", help="Environment variable name for free EIA API key")
+    replacements.set_defaults(func=cmd_acquire_replacements)
 
     acquire = sub.add_parser(
         "acquire",

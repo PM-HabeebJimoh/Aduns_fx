@@ -27,6 +27,13 @@ ALLOWED_REALTIME_CAPTURE_MODES = {
     "broker_realtime_archive",
     "exchange_realtime_archive",
     "vendor_realtime_archive",
+    # Free replacement modes. These are accepted only because the user explicitly
+    # requested public/free replacements for blocked original feeds. Reports keep
+    # provenance labels so delayed/proxy sources are not misrepresented.
+    "free_public_replacement",
+    "official_delayed_archive",
+    "public_historical_archive",
+    "public_proxy_archive",
 }
 
 DISALLOWED_SOURCE_WORDS = {
@@ -226,11 +233,22 @@ class StrictRealDataBacktester:
 
         entries = self._feed_entries(manifest, required.name)
         if not entries:
+            replacement_policy = manifest.get("replacement_policy")
+            if replacement_policy:
+                reason = (
+                    "Free/public replacement mode is enabled, but no normalized real-data CSV "
+                    f"was produced for this feed. Run `acquire-replacements` on a network that can reach "
+                    f"the replacement sources. {required.why_required}"
+                )
+                status = "MISSING_REPLACEMENT_OUTPUT"
+            else:
+                reason = f"Required feed is absent from manifest. {required.why_required}"
+                status = "MISSING"
             return FeedAudit(
                 name=required.name,
                 purpose=required.purpose,
-                status="MISSING",
-                reason=f"Required feed is absent from manifest. {required.why_required}",
+                status=status,
+                reason=reason,
                 required_columns=required.required_columns,
             )
 

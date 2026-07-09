@@ -106,7 +106,7 @@ python -m aduns_fx.cli demo
 python -m aduns_fx.cli demo --json
 python -m aduns_fx.cli live --config config/live.example.json --once
 python -m aduns_fx.cli probe-free-sources --start 2026-01-01 --end 2026-01-31
-python -m aduns_fx.cli acquire --start 2026-01-01 --end 2026-07-07 --data-dir data/realtime_archive
+python -m aduns_fx.cli acquire-replacements --start 2026-01-01 --end 2026-07-07 --data-dir data/realtime_archive
 python -m aduns_fx.cli backtest --start 2026-01-01 --end 2026-07-07 --data-dir data/realtime_archive
 ```
 

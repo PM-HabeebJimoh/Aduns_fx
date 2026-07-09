@@ -1,9 +1,6 @@
 {
-  "created_at": "2026-07-09T14:42:27.523449+00:00",
-  "purpose": "HYDRA-PRIME strict real-data archive manifest",
-  "feeds": [],
-  "notes": [
-    "Only feeds successfully downloaded and normalised by the lawful acquirer are included.",
-    "Failed probes are recorded in reports, not promoted to backtest feeds."
-  ]
+  "created_at": "2026-07-09T15:36:44.240557+00:00",
+  "purpose": "HYDRA-PRIME free replacement real-data manifest",
+  "replacement_policy": "Use free/public replacement sources when original feed families are unavailable. Never fabricate data.",
+  "feeds": []
 }

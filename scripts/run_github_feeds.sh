@@ -56,9 +56,9 @@ python -m aduns_fx.cli probe-free-sources --start "$START_DATE" --end "$END_DATE
 PROBE_CODE=$?
 echo "| Free replacement source probe | $PROBE_CODE | $([ $PROBE_CODE -eq 0 ] && echo OK || echo PARTIAL_OR_BLOCKED) |" >> "$summary"
 
-python -m aduns_fx.cli acquire --start "$START_DATE" --end "$END_DATE" --data-dir "$DATA_DIR" --report-dir "$REPORT_DIR" --timeout 20
+python -m aduns_fx.cli acquire-replacements --start "$START_DATE" --end "$END_DATE" --data-dir "$DATA_DIR" --report-dir "$REPORT_DIR" --timeout 20
 ACQUIRE_CODE=$?
-echo "| Public feed acquisition | $ACQUIRE_CODE | $([ $ACQUIRE_CODE -eq 0 ] && echo ACQUIRED || echo BLOCKED_OR_UNREACHABLE) |" >> "$summary"
+echo "| Free replacement acquisition | $ACQUIRE_CODE | $([ $ACQUIRE_CODE -eq 0 ] && echo NORMALIZED || echo PARTIAL_OR_BLOCKED) |" >> "$summary"
 
 python -m aduns_fx.cli backtest --start "$START_DATE" --end "$END_DATE" --data-dir "$DATA_DIR" --report-dir "$REPORT_DIR"
 AUDIT_CODE=$?
@@ -85,7 +85,7 @@ cat >> "$summary" <<EOF
 
 - Live health: \`reports/hydra_prime_live_health.json\`
 - Free replacement probe: \`$REPORT_DIR/free_source_probe_${START_DATE}_to_${END_DATE}.md/json\`
-- Acquisition reports: \`$REPORT_DIR/hydra_prime_acquisition_${START_DATE}_to_${END_DATE}.md/json\`
+- Replacement acquisition reports: \`$REPORT_DIR/hydra_prime_replacement_acquisition_${START_DATE}_to_${END_DATE}.md/json\`
 - Opportunity audit reports: \`$REPORT_DIR/hydra_prime_opportunity_audit_${START_DATE}_to_${END_DATE}.md/json\`
 - Alert log: \`logs/hydra_prime_alerts.jsonl\` if alerts fired
 
