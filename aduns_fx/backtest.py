@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from .models import utcnow
+from .replay import OpportunityReplayRunner
 
 
 ALLOWED_REALTIME_CAPTURE_MODES = {
@@ -386,7 +387,22 @@ class StrictRealDataBacktester:
         )
 
     def run(self) -> BacktestAudit:
-        return self.audit()
+        audit = self.audit()
+        if audit.status != "OK":
+            return audit
+        manifest = self._load_manifest() or {}
+        replay = OpportunityReplayRunner(
+            data_dir=self.data_dir,
+            manifest=manifest,
+            start=self.start_raw,
+            end=self.end_raw,
+        ).run()
+        audit.opportunity_replay = replay.to_dict()
+        audit.note = (
+            "Strict opportunity replay completed from verified manifest CSV feeds. "
+            "Execution is disabled; no P&L/ROI/fill analysis is produced."
+        )
+        return audit
 
     def write_report(self, report_dir: str | Path = "reports") -> tuple[Path, Path, BacktestAudit]:
         report = self.run()
@@ -433,6 +449,13 @@ def render_audit_markdown(report: BacktestAudit) -> str:
             f"{feed.first_timestamp or ''} | {feed.last_timestamp or ''} | {reason} |"
         )
     lines.append("")
+    if report.opportunity_replay is not None:
+        lines.append("## Opportunity replay")
+        lines.append("")
+        lines.append("```json")
+        lines.append(json.dumps(report.opportunity_replay, indent=2))
+        lines.append("```")
+        lines.append("")
     lines.append("## Output mode")
     lines.append("")
     lines.append("Opportunity detection only. No trade execution, no broker connection, no fill ledger, no ROI/P&L reporting.")

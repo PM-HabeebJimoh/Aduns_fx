@@ -114,7 +114,7 @@ The demo runs an offline deterministic XAUUSD scenario where all eight detector 
 
 ## Strict real-data opportunity audit
 
-The `backtest` CLI is now an opportunity-feed audit. It is intentionally provenance-gated. It refuses to output fabricated alerts from missing data and it does not calculate ROI/P&L because execution has been removed.
+The `backtest` CLI is now a provenance-gated opportunity replay. It first audits the manifest and refuses to output fabricated alerts from missing data. When all required real/free-replacement CSV feeds exist, it replays those rows through HYDRA and records opportunity alerts. It does not calculate ROI/P&L because execution has been removed.
 
 For strict real-data opportunity replay — **real-time data only, no demo, no simulation, no assumptions** — the data directory must contain `manifest.json` plus CSV archives for:
 
