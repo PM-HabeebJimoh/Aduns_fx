@@ -12,6 +12,7 @@ from typing import Any, Dict
 from .acquire import PublicDataAcquirer
 from .backtest import StrictRealDataBacktester
 from .formatting import decision_to_json, format_pre_move_signal
+from .free_sources import probe_free_sources, write_probe_report
 from .live import LiveConfig, LiveOpportunityScanner
 from .testing_scenarios import build_bullish_xau_engine
 
@@ -108,6 +109,26 @@ def cmd_live(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_probe_free_sources(args: argparse.Namespace) -> int:
+    report = probe_free_sources(
+        start=args.start,
+        end=args.end,
+        output_dir=args.output_dir,
+        timeout=args.timeout,
+    )
+    json_path, md_path = write_probe_report(report, args.report_dir)
+    print(f"Status: {report.status}")
+    print(f"JSON report: {json_path}")
+    print(f"Markdown report: {md_path}")
+    ok = sum(1 for r in report.results if r.status == "OK")
+    total = len(report.results)
+    print(f"Sources OK: {ok}/{total}")
+    for result in report.results:
+        if result.status != "OK":
+            print(f"- {result.feed}/{result.name}: {result.status} — {result.error or result.reason}")
+    return 0 if report.status == "OK" else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="HYDRA-PRIME pre-movement decision engine")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -133,6 +154,17 @@ def build_parser() -> argparse.ArgumentParser:
     live.add_argument("--alert-log", default=None, help="JSONL alert log path")
     live.add_argument("--health-report", default=None, help="Health report JSON path")
     live.set_defaults(func=cmd_live)
+
+    probe = sub.add_parser(
+        "probe-free-sources",
+        help="Probe all researched free replacement data sources and write a provenance report",
+    )
+    probe.add_argument("--start", required=True, help="Start date, e.g. 2026-01-01")
+    probe.add_argument("--end", required=True, help="End date, e.g. 2026-01-31")
+    probe.add_argument("--output-dir", default="data/free_source_probes", help="Directory for probe payload samples")
+    probe.add_argument("--report-dir", default="reports", help="Directory for JSON/Markdown probe reports")
+    probe.add_argument("--timeout", type=float, default=20.0, help="HTTP timeout seconds")
+    probe.set_defaults(func=cmd_probe_free_sources)
 
     acquire = sub.add_parser(
         "acquire",
