@@ -1,10 +1,10 @@
 # HYDRA-PRIME Strict Real-Time-Only Opportunity Audit
 
-- Requested period: `2026-01-01` to `2026-07-07`
+- Requested period: `2026-02-08` to `2026-02-08`
 - Data directory: `data/realtime_archive`
 - Strict real-time archive only: `True`
 - Status: **BLOCKED**
-- Generated at: `2026-07-09T14:53:13.006764+00:00`
+- Generated at: `2026-07-09T14:53:16.642530+00:00`
 
 ## Verdict
 

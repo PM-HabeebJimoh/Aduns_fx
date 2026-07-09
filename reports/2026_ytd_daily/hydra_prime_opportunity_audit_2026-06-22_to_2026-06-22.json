@@ -1,10 +1,10 @@
 {
-  "requested_start": "2026-01-01",
-  "requested_end": "2026-07-07",
+  "requested_start": "2026-06-22",
+  "requested_end": "2026-06-22",
   "data_dir": "data/realtime_archive",
   "strict_realtime_only": true,
   "status": "BLOCKED",
-  "generated_at": "2026-07-09T14:53:13.006764+00:00",
+  "generated_at": "2026-07-09T14:53:28.902683+00:00",
   "blockers": [
     "cross_asset_price_ticks: Required feed is absent from manifest. Lead/lag detection cannot be reconstructed from daily data.",
     "vpin_trade_ticks: Required feed is absent from manifest. VPIN requires real trade sequence, volume buckets, and side classification/inference.",
