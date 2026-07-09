@@ -147,6 +147,17 @@ for decision in engine.evaluate(["XAUUSD"]):
         print(format_pre_move_signal(decision))
 ```
 
+## Free replacement source research
+
+A rigorous free-source replacement matrix is included in:
+
+```text
+reports/free_data_source_replacement_research.md
+config/free_source_replacements.json
+```
+
+The hard conclusion is that free/public replacements exist for most feed families, but some are delayed/proxy/unofficial rather than perfect real-time equivalents. HYDRA-PRIME must label feed provenance honestly: `REAL_TIME`, `DELAYED_OFFICIAL`, `HISTORICAL_ARCHIVE`, `UNOFFICIAL`, or `PROXY`.
+
 ## Optional live data adapters
 
 `aduns_fx.data_sources` includes small stdlib-only clients for public endpoints:

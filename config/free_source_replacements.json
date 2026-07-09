@@ -1,0 +1,175 @@
+{
+  "generated_at": "2026-07-09",
+  "policy": "Free/public sources only. Do not fabricate data. Label delayed/proxy/unofficial feeds explicitly.",
+  "feeds": {
+    "cross_asset_price_ticks": [
+      {
+        "name": "Dukascopy tick archive",
+        "type": "historical_quote_tick_archive",
+        "coverage": ["FX", "metals", "indices", "commodities"],
+        "url_pattern": "https://datafeed.dukascopy.com/datafeed/{SYMBOL}/{YYYY}/{MM_ZERO_INDEXED}/{DD}/{HH}h_ticks.bi5",
+        "provenance_label": "HISTORICAL_QUOTE_TICK_ARCHIVE",
+        "caveat": "Quote ticks, not centralized trade prints."
+      },
+      {
+        "name": "Binance public data",
+        "type": "exchange_trade_and_kline_archive",
+        "coverage": ["crypto", "PAXG", "BTC", "ETH"],
+        "url": "https://data.binance.vision/",
+        "provenance_label": "REAL_EXCHANGE_TRADE_ARCHIVE"
+      },
+      {
+        "name": "Coinbase public WebSocket",
+        "type": "real_time_exchange_stream",
+        "coverage": ["crypto"],
+        "url": "wss://advanced-trade-ws.coinbase.com",
+        "provenance_label": "REAL_TIME_PUBLIC_EXCHANGE_STREAM"
+      },
+      {
+        "name": "Kraken public WebSocket",
+        "type": "real_time_exchange_stream",
+        "coverage": ["crypto"],
+        "url": "wss://ws.kraken.com",
+        "provenance_label": "REAL_TIME_PUBLIC_EXCHANGE_STREAM"
+      }
+    ],
+    "vpin_trade_ticks": [
+      {
+        "name": "Binance trades/aggTrades",
+        "type": "true_trade_ticks",
+        "coverage": ["crypto"],
+        "provenance_label": "TRUE_VPIN_AVAILABLE_FOR_CRYPTO"
+      },
+      {
+        "name": "Coinbase market_trades",
+        "type": "true_trade_stream",
+        "coverage": ["crypto"],
+        "provenance_label": "TRUE_VPIN_AVAILABLE_FOR_CRYPTO"
+      },
+      {
+        "name": "Kraken public trades",
+        "type": "true_trade_stream",
+        "coverage": ["crypto"],
+        "provenance_label": "TRUE_VPIN_AVAILABLE_FOR_CRYPTO"
+      },
+      {
+        "name": "Dukascopy quote toxicity proxy",
+        "type": "quote_tick_proxy",
+        "coverage": ["FX", "metals"],
+        "provenance_label": "QUOTE_TOXICITY_PROXY_NOT_TRUE_VPIN"
+      }
+    ],
+    "ohlcv_intraday_bars": [
+      {
+        "name": "Binance klines",
+        "type": "exchange_ohlcv_archive",
+        "coverage": ["crypto"],
+        "provenance_label": "REAL_EXCHANGE_OHLCV_ARCHIVE"
+      },
+      {
+        "name": "Dukascopy resampled ticks",
+        "type": "tick_to_bar_resample",
+        "coverage": ["FX", "metals"],
+        "provenance_label": "HISTORICAL_QUOTE_BAR_ARCHIVE"
+      },
+      {
+        "name": "Coinbase/Kraken candles",
+        "type": "exchange_candles",
+        "coverage": ["crypto"],
+        "provenance_label": "REAL_TIME_PUBLIC_EXCHANGE_STREAM"
+      },
+      {
+        "name": "Yahoo/Stooq fallback",
+        "type": "unofficial_or_delayed_ohlcv",
+        "coverage": ["equities", "indices", "fx", "commodities"],
+        "provenance_label": "FALLBACK_DELAYED_OR_UNOFFICIAL"
+      }
+    ],
+    "options_flow_snapshots": [
+      {
+        "name": "Deribit public options trades/summaries",
+        "type": "exchange_crypto_options_flow",
+        "coverage": ["BTC options", "ETH options"],
+        "provenance_label": "REAL_EXCHANGE_OPTIONS_FLOW_CRYPTO"
+      },
+      {
+        "name": "CBOE put/call ratio CSV archives",
+        "type": "aggregate_options_sentiment",
+        "coverage": ["US equity options aggregate", "US index options aggregate"],
+        "provenance_label": "OFFICIAL_AGGREGATE_OPTIONS_SENTIMENT"
+      },
+      {
+        "name": "Tradier/Yahoo/Alpha Vantage fallback",
+        "type": "delayed_or_unofficial_options_chain",
+        "coverage": ["US equity options chains"],
+        "provenance_label": "DELAYED_OR_UNOFFICIAL_OPTIONS_CHAIN_PROXY"
+      }
+    ],
+    "dark_pool_block_prints": [
+      {
+        "name": "FINRA OTC Transparency APIs",
+        "type": "official_delayed_ats_otc_summary",
+        "coverage": ["ATS weekly", "OTC weekly", "block summaries"],
+        "provenance_label": "OFFICIAL_DELAYED_ATS_OTC_BLOCK_DATA"
+      },
+      {
+        "name": "FINRA Reg SHO daily short sale files",
+        "type": "official_daily_short_sale_volume",
+        "coverage": ["US equities", "ETFs"],
+        "provenance_label": "OFFICIAL_DAILY_SHORT_SALE_VOLUME"
+      }
+    ],
+    "cot_positioning": [
+      {
+        "name": "CFTC historical compressed reports",
+        "type": "official_weekly_positioning",
+        "coverage": ["futures", "metals", "FX futures", "rates", "indices", "commodities"],
+        "provenance_label": "OFFICIAL_WEEKLY_POSITIONING"
+      },
+      {
+        "name": "CFTC API/open-source COT loaders",
+        "type": "official_api_or_parser",
+        "coverage": ["legacy", "disaggregated", "TFF"],
+        "provenance_label": "OFFICIAL_OR_PUBLIC_DOMAIN_WEEKLY_POSITIONING"
+      }
+    ],
+    "physical_inventory_sensors": [
+      {
+        "name": "LME warehouse and stock reports",
+        "type": "official_delayed_physical_metal_stocks",
+        "coverage": ["base metals", "cancelled warrants", "live warrants"],
+        "provenance_label": "OFFICIAL_DELAYED_PHYSICAL_METAL_STOCKS"
+      },
+      {
+        "name": "CME/COMEX warehouse stocks",
+        "type": "official_or_derived_daily_comex_stocks",
+        "coverage": ["gold", "silver", "copper", "platinum", "palladium"],
+        "provenance_label": "OFFICIAL_OR_DERIVED_DAILY_COMEX_STOCKS"
+      },
+      {
+        "name": "EIA API",
+        "type": "official_energy_demand_proxy",
+        "coverage": ["electricity", "energy", "industrial demand proxy"],
+        "provenance_label": "OFFICIAL_ENERGY_DEMAND_PROXY"
+      },
+      {
+        "name": "USGS Mineral Commodity Summaries",
+        "type": "official_low_frequency_supply_context",
+        "coverage": ["mine production", "world production", "reserves"],
+        "provenance_label": "OFFICIAL_LOW_FREQUENCY_SUPPLY_CONTEXT"
+      },
+      {
+        "name": "IMF PortWatch / IEA chokepoint tools / AIS front-ends",
+        "type": "shipping_proxy",
+        "coverage": ["port congestion", "shipping chokepoints", "AIS proxies"],
+        "provenance_label": "FREE_SHIPPING_PROXY_OR_LIMITED_AIS"
+      },
+      {
+        "name": "Google Trends via pytrends/Apify",
+        "type": "retail_attention_proxy",
+        "coverage": ["buy gold", "gold price", "silver squeeze"],
+        "provenance_label": "UNOFFICIAL_RETAIL_ATTENTION_PROXY"
+      }
+    ]
+  }
+}
