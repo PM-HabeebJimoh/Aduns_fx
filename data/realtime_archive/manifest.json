@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-07-09T12:53:24.289037+00:00",
+  "purpose": "HYDRA-PRIME strict real-data archive manifest",
+  "feeds": [],
+  "notes": [
+    "Only feeds successfully downloaded and normalised by the lawful acquirer are included.",
+    "Failed probes are recorded in reports, not promoted to backtest feeds."
+  ]
+}
