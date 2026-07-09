@@ -14,11 +14,20 @@ import urllib.request
 from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Optional
 
-from .models import OHLCVBar, OptionSnapshot, PriceTick
+from .models import OHLCVBar, OptionSnapshot, PriceTick, PhysicalSnapshot
 
 
 class DataSourceError(RuntimeError):
     pass
+
+
+def _redact_url(url: str) -> str:
+    parsed = urllib.parse.urlsplit(url)
+    pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    redacted = [(k, "REDACTED" if k.lower() in {"api_key", "apikey", "token", "key"} else v) for k, v in pairs]
+    return urllib.parse.urlunsplit(
+        (parsed.scheme, parsed.netloc, parsed.path, urllib.parse.urlencode(redacted), parsed.fragment)
+    )
 
 
 def _http_json(url: str, timeout: float = 15.0, headers: Optional[Dict[str, str]] = None) -> Any:
@@ -28,7 +37,7 @@ def _http_json(url: str, timeout: float = 15.0, headers: Optional[Dict[str, str]
             raw = resp.read().decode("utf-8")
             return json.loads(raw)
     except Exception as exc:  # pragma: no cover - network dependent
-        raise DataSourceError(f"Failed to fetch {url}: {exc}") from exc
+        raise DataSourceError(f"Failed to fetch {_redact_url(url)}: {exc}") from exc
 
 
 class YahooChartClient:
@@ -142,6 +151,51 @@ class DeribitClient:
             iv_call_25d=avg_call_iv,
             iv_put_25d=avg_put_iv,
         )
+
+
+class EiaClient:
+    """Small EIA Open Data API v2 adapter."""
+
+    BASE = "https://api.eia.gov/v2/electricity/retail-sales/data/"
+
+    def __init__(self, api_key: Optional[str] = None) -> None:
+        self.api_key = api_key
+
+    def industrial_electricity_sales(self, limit: int = 24) -> List[tuple[datetime, float]]:
+        """Return recent US industrial electricity sales observations.
+
+        Values are EIA retail-sales `sales` for sector `IND`, state `US`, monthly.
+        This is used as a physical-world industrial-demand proxy.
+        """
+
+        params: Dict[str, Any] = {
+            "frequency": "monthly",
+            "data[0]": "sales",
+            "facets[sectorid][]": "IND",
+            "facets[stateid][]": "US",
+            "sort[0][column]": "period",
+            "sort[0][direction]": "desc",
+            "offset": "0",
+            "length": str(limit),
+        }
+        if self.api_key:
+            params["api_key"] = self.api_key
+        url = self.BASE + "?" + urllib.parse.urlencode(params)
+        data = _http_json(url)
+        out: List[tuple[datetime, float]] = []
+        for row in data.get("response", {}).get("data", []):
+            period = str(row.get("period", ""))
+            value = row.get("sales")
+            if not period or value in (None, ""):
+                continue
+            try:
+                # EIA monthly periods are YYYY-MM.
+                dt = datetime.fromisoformat(period + "-01").replace(tzinfo=timezone.utc)
+                out.append((dt, float(value)))
+            except (TypeError, ValueError):
+                continue
+        out.sort(key=lambda item: item[0])
+        return out
 
 
 class FredClient:

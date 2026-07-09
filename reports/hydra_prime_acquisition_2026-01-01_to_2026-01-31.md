@@ -4,7 +4,7 @@
 - Data directory: `data/realtime_archive`
 - Manifest: `data/realtime_archive/manifest.json`
 - Status: **BLOCKED**
-- Generated at: `2026-07-09T13:08:46.805693+00:00`
+- Generated at: `2026-07-09T14:42:27.524131+00:00`
 
 ## Blockers
 

@@ -8,6 +8,10 @@
   "enable_yahoo": true,
   "enable_binance": true,
   "enable_deribit": true,
+  "enable_fred": true,
+  "enable_eia": true,
+  "fred_api_key_env": "FRED_API_KEY",
+  "eia_api_key_env": "EIA_API_KEY",
   "yahoo_range": "6mo",
   "yahoo_interval": "1d",
   "binance_trade_limit": 1000

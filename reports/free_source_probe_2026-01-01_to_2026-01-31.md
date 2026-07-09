@@ -1,6 +1,6 @@
 # HYDRA-PRIME Free Replacement Source Probe
 
-- Generated: `2026-07-09T14:19:42.444299+00:00`
+- Generated: `2026-07-09T14:42:26.918929+00:00`
 - Range: `2026-01-01` to `2026-01-31`
 - Status: **PARTIAL_OR_BLOCKED**
 
@@ -25,8 +25,8 @@
 | `cot_positioning` | CFTC disaggregated COT compressed file | **BLOCKED_OR_UNREACHABLE** | `OFFICIAL_WEEKLY_POSITIONING` | False | 0 | Could not retrieve source without fabrication. Error: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> |
 | `physical_inventory_sensors` | LME warehouse and stock reports page | **BLOCKED_OR_UNREACHABLE** | `OFFICIAL_DELAYED_PHYSICAL_METAL_STOCKS` | False | 0 | Could not retrieve source without fabrication. Error: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> |
 | `physical_inventory_sensors` | CME COMEX delivery notices and stocks page | **BLOCKED_OR_UNREACHABLE** | `OFFICIAL_OR_DERIVED_DAILY_COMEX_STOCKS` | False | 0 | Could not retrieve source without fabrication. Error: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> |
-| `physical_inventory_sensors` | EIA electricity retail sales metadata | **NEEDS_FREE_API_KEY** | `OFFICIAL_ENERGY_DEMAND_PROXY` | False | 0 | Could not retrieve source without fabrication. Error: missing free API key env EIA_API_KEY |
-| `physical_inventory_sensors` | FRED real yield DFII10 | **NEEDS_FREE_API_KEY** | `OFFICIAL_MACRO_REAL_YIELD_PROXY` | False | 0 | Could not retrieve source without fabrication. Error: missing free API key env FRED_API_KEY |
+| `physical_inventory_sensors` | EIA electricity retail sales metadata | **BLOCKED_OR_UNREACHABLE** | `OFFICIAL_ENERGY_DEMAND_PROXY` | False | 0 | Could not retrieve source without fabrication. Error: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> |
+| `physical_inventory_sensors` | FRED real yield DFII10 | **BLOCKED_OR_UNREACHABLE** | `OFFICIAL_MACRO_REAL_YIELD_PROXY` | False | 0 | Could not retrieve source without fabrication. Error: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> |
 | `physical_inventory_sensors` | USGS Mineral Commodity Summaries 2025 page | **BLOCKED_OR_UNREACHABLE** | `OFFICIAL_LOW_FREQUENCY_SUPPLY_CONTEXT` | False | 0 | Could not retrieve source without fabrication. Error: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> |
 
 ## Truth rule

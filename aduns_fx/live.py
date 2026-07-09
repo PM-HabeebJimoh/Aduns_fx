@@ -17,10 +17,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
-from .data_sources import BinanceRestClient, DeribitClient, YahooChartClient, YAHOO_SYMBOLS
+from .data_sources import BinanceRestClient, DeribitClient, EiaClient, FredClient, YahooChartClient, YAHOO_SYMBOLS
 from .engine import HydraPrimeEngine
 from .formatting import decision_to_json, format_pre_move_signal
-from .models import Decision, OHLCVBar, PriceTick, TradeTick, utcnow
+from .models import Decision, OHLCVBar, PhysicalSnapshot, PriceTick, TradeTick, utcnow
 
 
 DEFAULT_LIVE_INSTRUMENTS = ["XAUUSD", "XAGUSD", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCHF", "HG"]
@@ -70,6 +70,10 @@ class LiveConfig:
     enable_yahoo: bool = True
     enable_binance: bool = True
     enable_deribit: bool = True
+    enable_fred: bool = True
+    enable_eia: bool = True
+    fred_api_key_env: str = "FRED_API_KEY"
+    eia_api_key_env: str = "EIA_API_KEY"
     yahoo_range: str = "6mo"
     yahoo_interval: str = "1d"
     binance_trade_limit: int = 1000
@@ -129,6 +133,8 @@ class LiveOpportunityScanner:
         self.yahoo = YahooChartClient()
         self.binance = BinanceRestClient()
         self.deribit = DeribitClient()
+        self.fred = FredClient(api_key=os.environ.get(config.fred_api_key_env))
+        self.eia = EiaClient(api_key=os.environ.get(config.eia_api_key_env))
         self.sink = AlertSink(config.alert_log, webhook_url=os.environ.get(config.webhook_url_env, "") or None)
         self.cycle = 0
         self._alert_keys_seen: set[str] = set()
@@ -230,8 +236,54 @@ class LiveOpportunityScanner:
             return FeedStatus("deribit", True, f"loaded {rows} option snapshots", rows, symbols_ok)
         return FeedStatus("deribit", False, "no Deribit data loaded", 0, symbols_ok, "; ".join(errors[:5]) or None)
 
+    def _poll_fred(self) -> FeedStatus:
+        if not self.config.enable_fred:
+            return FeedStatus("fred", True, "disabled", 0, [])
+        if not os.environ.get(self.config.fred_api_key_env):
+            return FeedStatus("fred", False, f"missing {self.config.fred_api_key_env}", 0, [], "free FRED API key env not set")
+        try:
+            rows = self.fred.series("DFII10", limit=160)
+            for ts, value in rows:
+                self.engine.ingest_bar(OHLCVBar("REALYIELD", ts, value, value, value, value, 0.0))
+            return FeedStatus("fred", True, f"loaded {len(rows)} DFII10 real-yield rows", len(rows), ["REALYIELD"])
+        except Exception as exc:
+            return FeedStatus("fred", False, "no FRED data loaded", 0, [], str(exc))
+
+    def _poll_eia(self) -> FeedStatus:
+        if not self.config.enable_eia:
+            return FeedStatus("eia", True, "disabled", 0, [])
+        if not os.environ.get(self.config.eia_api_key_env):
+            return FeedStatus("eia", False, f"missing {self.config.eia_api_key_env}", 0, [], "free EIA API key env not set")
+        try:
+            rows = self.eia.industrial_electricity_sales(limit=24)
+            if not rows:
+                return FeedStatus("eia", False, "EIA returned no industrial electricity rows", 0, [], None)
+            values = [v for _, v in rows]
+            latest_ts, latest_value = rows[-1]
+            mean_value = sum(values) / len(values)
+            variance = sum((v - mean_value) ** 2 for v in values) / max(1, len(values))
+            z = 0.0 if variance <= 1e-12 else (latest_value - mean_value) / (variance ** 0.5)
+            for instrument in ("HG", "XAGUSD", "XAUUSD"):
+                self.engine.ingest_physical(
+                    PhysicalSnapshot(
+                        instrument=instrument,
+                        electricity_demand_index=z,
+                        timestamp=latest_ts,
+                        metadata={"source": "EIA industrial electricity sales", "latest_sales": latest_value},
+                    )
+                )
+            return FeedStatus("eia", True, f"loaded {len(rows)} industrial electricity observations", len(rows), ["HG", "XAGUSD", "XAUUSD"])
+        except Exception as exc:
+            return FeedStatus("eia", False, "no EIA data loaded", 0, [], str(exc))
+
     def poll_feeds(self) -> List[FeedStatus]:
-        statuses = [self._poll_yahoo(), self._poll_binance(), self._poll_deribit()]
+        statuses = [
+            self._poll_yahoo(),
+            self._poll_binance(),
+            self._poll_deribit(),
+            self._poll_fred(),
+            self._poll_eia(),
+        ]
         return statuses
 
     def scan_once(self) -> LiveRunResult:

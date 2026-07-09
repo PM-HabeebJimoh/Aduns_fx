@@ -1,6 +1,6 @@
 {
   "status": "NO_LIVE_FEEDS",
-  "generated_at": "2026-07-09T13:08:46.060749+00:00",
+  "generated_at": "2026-07-09T14:42:25.868011+00:00",
   "cycle": 1,
   "alerts_count": 0,
   "alerts": [],
@@ -28,6 +28,22 @@
       "rows": 0,
       "symbols": [],
       "error": "BTC: Failed to fetch https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=BTC&kind=option: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; ETH: Failed to fetch https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=ETH&kind=option: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    {
+      "source": "fred",
+      "ok": false,
+      "message": "no FRED data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "Failed to fetch https://api.stlouisfed.org/fred/series/observations?series_id=DFII10&file_type=json&sort_order=desc&limit=160&api_key=REDACTED: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    {
+      "source": "eia",
+      "ok": false,
+      "message": "no EIA data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "Failed to fetch https://api.eia.gov/v2/electricity/retail-sales/data/?frequency=monthly&data%5B0%5D=sales&facets%5Bsectorid%5D%5B%5D=IND&facets%5Bstateid%5D%5B%5D=US&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=desc&offset=0&length=24&api_key=REDACTED: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
     }
   ],
   "diagnostics": {

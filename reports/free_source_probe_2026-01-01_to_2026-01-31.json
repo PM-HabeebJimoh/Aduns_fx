@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T14:19:42.444299+00:00",
+  "generated_at": "2026-07-09T14:42:26.918929+00:00",
   "status": "PARTIAL_OR_BLOCKED",
   "start": "2026-01-01",
   "end": "2026-01-31",
@@ -254,7 +254,7 @@
     {
       "feed": "physical_inventory_sensors",
       "name": "EIA electricity retail sales metadata",
-      "status": "NEEDS_FREE_API_KEY",
+      "status": "BLOCKED_OR_UNREACHABLE",
       "provenance_label": "OFFICIAL_ENERGY_DEMAND_PROXY",
       "realtime": false,
       "quality": "medium_requires_free_key",
@@ -262,12 +262,12 @@
       "reason": "Could not retrieve source without fabrication.",
       "bytes_received": 0,
       "saved_path": null,
-      "error": "missing free API key env EIA_API_KEY"
+      "error": "<urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
     },
     {
       "feed": "physical_inventory_sensors",
       "name": "FRED real yield DFII10",
-      "status": "NEEDS_FREE_API_KEY",
+      "status": "BLOCKED_OR_UNREACHABLE",
       "provenance_label": "OFFICIAL_MACRO_REAL_YIELD_PROXY",
       "realtime": false,
       "quality": "high_requires_free_key",
@@ -275,7 +275,7 @@
       "reason": "Could not retrieve source without fabrication.",
       "bytes_received": 0,
       "saved_path": null,
-      "error": "missing free API key env FRED_API_KEY"
+      "error": "<urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
     },
     {
       "feed": "physical_inventory_sensors",
