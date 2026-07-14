@@ -1,0 +1,13 @@
+services:
+  hydra-prime-live:
+    build: .
+    container_name: hydra-prime-live
+    restart: unless-stopped
+    environment:
+      # Optional: set to an HTTPS endpoint to receive JSON alert payloads.
+      HYDRA_ALERT_WEBHOOK_URL: ${HYDRA_ALERT_WEBHOOK_URL:-}
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./config:/app/config:ro
+    command: ["python", "-m", "aduns_fx.cli", "live", "--config", "config/live.example.json"]

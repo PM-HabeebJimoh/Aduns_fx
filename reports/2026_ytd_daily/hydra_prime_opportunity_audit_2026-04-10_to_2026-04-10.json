@@ -1,0 +1,155 @@
+{
+  "requested_start": "2026-04-10",
+  "requested_end": "2026-04-10",
+  "data_dir": "data/realtime_archive",
+  "strict_realtime_only": true,
+  "status": "BLOCKED",
+  "generated_at": "2026-07-09T14:53:22.195688+00:00",
+  "blockers": [
+    "cross_asset_price_ticks: Required feed is absent from manifest. Lead/lag detection cannot be reconstructed from daily data.",
+    "vpin_trade_ticks: Required feed is absent from manifest. VPIN requires real trade sequence, volume buckets, and side classification/inference.",
+    "ohlcv_intraday_bars: Required feed is absent from manifest. Squeeze and day/month opportunity replay need intraday bars.",
+    "options_flow_snapshots: Required feed is absent from manifest. Options flow cannot be truthfully replaced by underlying OHLC data.",
+    "dark_pool_block_prints: Required feed is absent from manifest. Institutional block/dark-pool footprints are a separate data source.",
+    "cot_positioning: Required feed is absent from manifest. COT velocity cannot be inferred from price.",
+    "physical_inventory_sensors: Required feed is absent from manifest. Cancelled warrants/inventory/production/demand are exogenous physical signals."
+  ],
+  "feed_audits": [
+    {
+      "name": "cross_asset_price_ticks",
+      "purpose": "Cross-asset temporal leads",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. Lead/lag detection cannot be reconstructed from daily data.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "symbol",
+        "price"
+      ],
+      "missing_columns": []
+    },
+    {
+      "name": "vpin_trade_ticks",
+      "purpose": "VPIN/order-flow toxicity",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. VPIN requires real trade sequence, volume buckets, and side classification/inference.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "symbol",
+        "price",
+        "volume",
+        "is_buy"
+      ],
+      "missing_columns": []
+    },
+    {
+      "name": "ohlcv_intraday_bars",
+      "purpose": "Volatility squeeze and opportunity context",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. Squeeze and day/month opportunity replay need intraday bars.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "symbol",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "missing_columns": []
+    },
+    {
+      "name": "options_flow_snapshots",
+      "purpose": "Options-flow anomaly detector",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. Options flow cannot be truthfully replaced by underlying OHLC data.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "instrument",
+        "call_volume",
+        "put_volume"
+      ],
+      "missing_columns": []
+    },
+    {
+      "name": "dark_pool_block_prints",
+      "purpose": "Dark-pool/block footprint detector",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. Institutional block/dark-pool footprints are a separate data source.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "instrument",
+        "dark_pool_volume",
+        "total_volume"
+      ],
+      "missing_columns": []
+    },
+    {
+      "name": "cot_positioning",
+      "purpose": "Institutional COT velocity",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. COT velocity cannot be inferred from price.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "instrument",
+        "commercial_net",
+        "open_interest"
+      ],
+      "missing_columns": []
+    },
+    {
+      "name": "physical_inventory_sensors",
+      "purpose": "Physical supply/demand sensors",
+      "status": "MISSING",
+      "reason": "Required feed is absent from manifest. Cancelled warrants/inventory/production/demand are exogenous physical signals.",
+      "path": null,
+      "source": null,
+      "capture_mode": null,
+      "rows": 0,
+      "first_timestamp": null,
+      "last_timestamp": null,
+      "required_columns": [
+        "timestamp",
+        "instrument"
+      ],
+      "missing_columns": []
+    }
+  ],
+  "opportunity_replay": null,
+  "note": "No opportunity replay was produced because doing so would require missing data or simulated assumptions."
+}

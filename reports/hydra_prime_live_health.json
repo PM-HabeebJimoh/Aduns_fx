@@ -1,0 +1,72 @@
+{
+  "status": "NO_LIVE_FEEDS",
+  "generated_at": "2026-07-09T15:36:42.543482+00:00",
+  "cycle": 1,
+  "alerts_count": 0,
+  "alerts": [],
+  "feed_statuses": [
+    {
+      "source": "yahoo",
+      "ok": false,
+      "message": "no Yahoo data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "XAUUSD/GC=F: Failed to fetch https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?range=6mo&interval=1d: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; XAGUSD/SI=F: Failed to fetch https://query1.finance.yahoo.com/v8/finance/chart/SI%3DF?range=6mo&interval=1d: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; EURUSD/EURUSD=X: Failed to fetch https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?range=6mo&interval=1d: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; GBPUSD/GBPUSD=X: Failed to fetch https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?range=6mo&interval=1d: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; USDJPY/JPY=X: Failed to fetch https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?range=6mo&interval=1d: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    {
+      "source": "binance",
+      "ok": false,
+      "message": "no Binance data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "price BTCUSDT: Failed to fetch https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; trades BTCUSDT: Failed to fetch https://api.binance.com/api/v3/aggTrades?symbol=BTCUSDT&limit=1000: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; price PAXGUSDT: Failed to fetch https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; trades PAXGUSDT: Failed to fetch https://api.binance.com/api/v3/aggTrades?symbol=PAXGUSDT&limit=1000: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    {
+      "source": "deribit",
+      "ok": false,
+      "message": "no Deribit data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "BTC: Failed to fetch https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=BTC&kind=option: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; ETH: Failed to fetch https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=ETH&kind=option: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    {
+      "source": "fred",
+      "ok": false,
+      "message": "no FRED data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "Failed to fetch https://api.stlouisfed.org/fred/series/observations?series_id=DFII10&file_type=json&sort_order=desc&limit=160&api_key=REDACTED: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    },
+    {
+      "source": "eia",
+      "ok": false,
+      "message": "no EIA data loaded",
+      "rows": 0,
+      "symbols": [],
+      "error": "Failed to fetch https://api.eia.gov/v2/electricity/retail-sales/data/?frequency=monthly&data%5B0%5D=sales&facets%5Bsectorid%5D%5B%5D=IND&facets%5Bstateid%5D%5B%5D=US&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=desc&offset=0&length=24&api_key=REDACTED: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+    }
+  ],
+  "diagnostics": {
+    "instruments": [
+      "XAUUSD",
+      "XAGUSD",
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD",
+      "USDCHF",
+      "HG"
+    ],
+    "latest_prices": {},
+    "signals_total": 0,
+    "signals_by_type": {},
+    "active_signals_by_type": {},
+    "output_mode": {
+      "opportunity_alerts_only": true,
+      "advisory_trade_parameters_included": true,
+      "broker_execution": false,
+      "order_routing": false,
+      "simulated_fills": false
+    }
+  }
+}
